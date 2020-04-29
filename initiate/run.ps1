@@ -28,7 +28,7 @@ if ($email) {
     Write-Host "Creating data share account..."
     $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname -Location $location)
 
-    Write-Host "Creating storage account and assigning contributor role on the storage account for the data share account..."
+    Write-Host "Assigning contributor role on the storage account for the data share account..."
     $storageAccount=(Get-AzStorageAccount -StorageAccountName $storageName -ResourceGroupName $resourceGroup)
     New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionName "Storage Blob Data Contributor" -Scope $storageAccount.Id
 
