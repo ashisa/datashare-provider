@@ -23,9 +23,6 @@ if ($email) {
     $storageName = "datashare2704storage"
     $dsaccountname = "datashare2704acct"
     $dssharename = "datashare2704"
-    $containerName = "templates"
-    $templateName1 = "azuredeploy1.json"
-    $templateName2 = "azuredeploy2.json"
     $location = "EastUS2"
 
     Write-Host "Creating data share account..."
