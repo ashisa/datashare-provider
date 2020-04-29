@@ -45,7 +45,7 @@ if ($email) {
     $inviteID = $invite.InvitationId
     Write-Host "$inviteID"
 
-    $body = "{""inviteID"": ""$($inviteID)"", ""datashareAccount"" : ""$($dsAccount.Name)"", ""$($dataset.StorageAccount)"" : """", ""datasetName"" : ""$($dataset.Name)"", ""datasetID"" : ""$($dataset.DataSetId)""}"
+    $body = "{""inviteID"": ""$($inviteID)"", ""datashareAccount"" : ""$($dsAccount.Name)"", ""storageAccount"" : ""$($dataset.StorageAccount)"", ""datasetName"" : ""$($dataset.Name)"", ""datasetID"" : ""$($dataset.DataSetId)""}"
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
