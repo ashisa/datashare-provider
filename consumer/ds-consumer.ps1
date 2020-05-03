@@ -1,6 +1,6 @@
-$resourceGroup = "datasharerg"
-$storageName = "datasharestorage2804"
-$dsaccountName = "datashareacct2804"
+$resourceGroup = "datashare0305rg"
+$storageName = "datashare0305storage"
+$dsaccountName = "datashare0305acct"
 $location = "EastUS2"
 $inviteID =  $args[0]
 $dsshareName = $args[1]

@@ -20,10 +20,10 @@ if ($email) {
     $invitename = $email -replace "@", ""
     $invitename = $invitename -replace "\.", ""
 
-    $resourceGroup = "datashare2704rg"
-    $storageName = "datashare2704storage"
-    $dsaccountname = "datashare2704acct"
-    $dssharename = "datashare2704"
+    $resourceGroup = "datashare0305rg"
+    $storageName = "datashare0305storage"
+    $dsaccountname = "datashare0305acct"
+    $dssharename = "datashare0305"
     $location = "EastUS2"
 
     $ErrorActionPreference = "SilentlyContinue";
