@@ -25,6 +25,7 @@ if ($email) {
     $dsaccountname = "datashare0305acct"
     $dssharename = "datashare0305"
     $location = "EastUS2"
+    $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
@@ -58,7 +59,7 @@ if ($email) {
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8000) -RestartPolicy Never
 
     Write-Host "Creating redirect header"
-    $header = ConvertFrom-StringData -StringData $("Location = $($container.IpAddress):$($container.Ports)/?arg=$($inviteID)&arg=$($Global:dataset.Name)&arg=dataset1&arg=$($Global:dataset.DataSetId)")
+    $header = ConvertFrom-StringData -StringData $("Location = https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Global:dataset.Name)&arg=dataset1&arg=$($Global:dataset.DataSetId)")
 
     $body = "{""inviteID"": ""$($inviteID)"", ""containerName"" : ""dataset1"", ""datasetName"" : ""$($Global:dataset.Name)"", ""datasetID"" : ""$($Global:dataset.DataSetId)""}"
 }
