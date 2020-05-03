@@ -4,4 +4,5 @@
 @{
     'Az' = '3.*'
     'Az.DataShare' = '0.*'
+    'Az.ContainerInstance' = '1.*'
 }
