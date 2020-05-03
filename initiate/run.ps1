@@ -28,7 +28,7 @@ if ($email) {
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
     New-Variable -Scope Script -Name $dataset -Value ""
 
-    #$ErrorActionPreference = "SilentlyContinue";
+    $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
     if (!$dsAccount.Name)
     {

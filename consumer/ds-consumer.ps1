@@ -17,7 +17,7 @@ Write-Host "Creating data share account..."
 $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountName -Location $location)
 
 Write-Host "Assigning contributor role on the storage account for the data share account..."
-$storageAccount=(New-AzStorageAccount -StorageAccountName $storageName -ResourceGroupName $resourceGroup -Location $location)
+$storageAccount=(New-AzStorageAccount -StorageAccountName $storageName -ResourceGroupName $resourceGroup -Location $location -SkuName Standard_LRS)
 New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionName "Storage Blob Data Contributor" -Scope $storageAccount.Id
 
 Write-Host "Creating containers..."
