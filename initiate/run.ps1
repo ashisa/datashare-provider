@@ -29,7 +29,7 @@ if ($email) {
     $dataset = ""
 
     #$ErrorActionPreference = "SilentlyContinue";
-    $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
+    $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
     if (!$dsAccount.Name)
     {
         Write-Host "Creating data share account..."
