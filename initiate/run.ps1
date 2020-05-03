@@ -51,18 +51,18 @@ if ($email) {
         $Script:dataset = (Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
     }
 
-    Write-Host "Creating redirect header"
-    $url = "http://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Script:dataset.Name)&arg=dataset1&arg=$($Script:dataset.DataSetId)"
-    Write-Host $url
-    $header = ConvertFrom-StringData -StringData $("Location = $($url)")
-
     Write-Host "Sending invite..."
     $invite = New-AzDataShareInvitation -ResourceGroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name "$invitename" -TargetEmail "$email"
     $inviteID = $invite.InvitationId
     Write-Host "$inviteID"
-
+    
     Write-Host "Creating ACI instance..."
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never
+
+    Write-Host "Creating redirect header"
+    $url = "http://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Script:dataset.Name)&arg=dataset1&arg=$($Script:dataset.DataSetId)"
+    Write-Host $url
+    $header = ConvertFrom-StringData -StringData $("Location = $($url)")
 
     $body = "{""inviteID"": ""$($inviteID)"", ""containerName"" : ""dataset1"", ""datasetName"" : ""$($Script:dataset.Name)"", ""datasetID"" : ""$($Script:dataset.DataSetId)""}"
 }
