@@ -26,7 +26,7 @@ if ($email) {
     $dssharename = "datashare0305"
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
-    $dataset = ""
+    $Global:dataset = ""
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
@@ -44,11 +44,11 @@ if ($email) {
 
         Write-Host "Creating container and dataset..."
         New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context
-        $dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
-        Write-Host "$dataset.Id"
+        $Global:dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
+        Write-Host "$Global:dataset.Id"
     }
     else {
-        $dataset=(Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
+        $Global:dataset = (Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
     }
 
     Write-Host "Sending invite..."
@@ -60,7 +60,7 @@ if ($email) {
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never
 
     Write-Host "Creating redirect header"
-    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($dataset.Name)&arg=dataset1&arg=$($dataset.DataSetId)"
+    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Global:dataset.Name)&arg=dataset1&arg=$($Global:dataset.DataSetId)"
     Write-Host $url
     $header = ConvertFrom-StringData -StringData $("Location = $($url)")
 
