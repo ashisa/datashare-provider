@@ -27,7 +27,6 @@ if ($email) {
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
     New-Variable -Scope Script -Name dataset -Value ""
-    Set-Item Env:\SuppressAzurePowerShellBreakingChangeWarnings "true"
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)

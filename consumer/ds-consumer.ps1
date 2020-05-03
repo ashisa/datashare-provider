@@ -7,6 +7,8 @@ $dsshareName = $args[1]
 $dsContainer = $args[2]
 $datasetId = $args[3]
 
+Set-Item Env:\SuppressAzurePowerShellBreakingChangeWarnings "true"
+
 Write-Host ""
 Write-Host "Initiating Azure Data Share service provisioning..."
 Write-Host ""
