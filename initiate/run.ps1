@@ -59,7 +59,7 @@ if ($email) {
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8000) -RestartPolicy Never
 
     Write-Host "Creating redirect header"
-    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Global:dataset.Name)&arg=dataset1&arg=$($Global:dataset.DataSetId)"
+    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($dataset.Name)&arg=dataset1&arg=$($dataset.DataSetId)"
     Write-Host $url
     $header = ConvertFrom-StringData -StringData $("Location = $($url)")
 
