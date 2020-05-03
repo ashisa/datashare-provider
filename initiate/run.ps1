@@ -26,11 +26,11 @@ if ($email) {
     $dssharename = "datashare0305"
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
-    New-Variable -Scope Script -Name $dataset -Value ""
+    New-Variable -Scope Script -Name dataset -Value ""
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
-    if (!$dsAccount.Name)
+    if (!$dsAccount)
     {
         Write-Host "Creating data share account..."
         $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname -Location $location)
