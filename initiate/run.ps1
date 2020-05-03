@@ -27,6 +27,7 @@ if ($email) {
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
     New-Variable -Scope Script -Name dataset -Value ""
+    Set-Item Env:\SuppressAzurePowerShellBreakingChangeWarnings "true"
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
@@ -55,9 +56,9 @@ if ($email) {
     $invite = New-AzDataShareInvitation -ResourceGroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name "$invitename" -TargetEmail "$email"
     $inviteID = $invite.InvitationId
     Write-Host "$inviteID"
-    
+
     Write-Host "Creating ACI instance..."
-    $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never
+    $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never -Cpu 2 -MemoryInGB 2
 
     Write-Host "Creating redirect header"
     $url = "http://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Script:dataset.Name)&arg=dataset1&arg=$($Script:dataset.DataSetId)"
