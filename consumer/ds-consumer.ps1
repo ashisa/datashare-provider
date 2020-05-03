@@ -1,5 +1,5 @@
 $resourceGroup = "datashare0305rg"
-$storageName = "datashare0305storage"
+$storageName = "datashare0305constorage"
 $dsaccountName = "datashare0305acct"
 $location = "EastUS2"
 $inviteID =  $args[0]
@@ -27,7 +27,7 @@ Write-Host "Accepting the invite..."
 New-AzDataShareSubscription -ResourceGroupName $resourceGroup -AccountName $dsaccountName -Name $dsshareName -SourceShareLocation $location -InvitationId $inviteID  |Out-Null
 
 Write-Host "Creating DataSet mapping..."
-New-AzDataShareDataSetMapping -ResourceGroupName $resourceGroup -AccountName $dsAccount.Name -StorageAccountResourceId $storageAccount.Id -Container $dsContainer -Name $dsshareName -ShareSubscriptionName $dsshareName -DataSetId $datasetId  |Out-Null
+New-AzDataShareDataSetMapping -ResourceGroupName $resourceGroup -AccountName $dsaccountName -StorageAccountResourceId $storageAccount.Id -Container $dsContainer -Name $dsshareName -ShareSubscriptionName $dsshareName -DataSetId $datasetId  |Out-Null
 
 Write-Host "Starting initial snapshot in the background..."
 Start-AzDataShareSubscriptionSynchronization -ResourceGroupName $resourceGroup -AccountName $dsaccountName -ShareSubscriptionName $dsshareName -SynchronizationMode FullSync  -AsJob  |Out-Null
