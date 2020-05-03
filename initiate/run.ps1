@@ -26,10 +26,11 @@ if ($email) {
     $dssharename = "datashare0305"
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
+    $dataset = ""
 
     $ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
-    if (!$dsAccount)
+    if (!$dsAccount.Name)
     {
         Write-Host "Creating data share account..."
         $dsAccount=(New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname -Location $location)
@@ -43,11 +44,11 @@ if ($email) {
 
         Write-Host "Creating container and dataset..."
         New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context
-        $Global:dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
+        $dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
         Write-Host "$dataset.Id"
     }
     else {
-        $Global:dataset=(Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
+        $dataset=(Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
     }
 
     Write-Host "Sending invite..."
@@ -56,7 +57,7 @@ if ($email) {
     Write-Host "$inviteID"
 
     Write-Host "Creating ACI instance..."
-    $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8000) -RestartPolicy Never
+    $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never
 
     Write-Host "Creating redirect header"
     $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($dataset.Name)&arg=dataset1&arg=$($dataset.DataSetId)"
