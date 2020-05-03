@@ -26,7 +26,7 @@ if ($email) {
     $dssharename = "datashare0305"
     $location = "EastUS2"
     $scriptUri = "https://raw.githubusercontent.com/ashisa/datashare-provider/master/consumer/ds-consumer.ps1"
-    $dataset = ""
+    New-Variable -Scope Script -Name $dataset -Value ""
 
     #$ErrorActionPreference = "SilentlyContinue";
     $dsAccount=(Get-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountname)
@@ -44,11 +44,11 @@ if ($email) {
 
         Write-Host "Creating container and dataset..."
         New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context
-        $dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
-        Write-Host "$dataset.Id"
+        $Script:dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
+        Write-Host "$Script:dataset.Id"
     }
     else {
-        $dataset = (Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
+        $Script:dataset = (Get-AzDataShareDataSet -AccountName $dsaccountname -ResourceGroupName $resourceGroup -ShareName $dssharename -Name DataSet1)
     }
 
     Write-Host "Sending invite..."
@@ -60,11 +60,11 @@ if ($email) {
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never
 
     Write-Host "Creating redirect header"
-    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($dataset.Name)&arg=dataset1&arg=$($dataset.DataSetId)"
+    $url = "https://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Script:dataset.Name)&arg=dataset1&arg=$($Script:dataset.DataSetId)"
     Write-Host $url
     $header = ConvertFrom-StringData -StringData $("Location = $($url)")
 
-    $body = "{""inviteID"": ""$($inviteID)"", ""containerName"" : ""dataset1"", ""datasetName"" : ""$($Global:dataset.Name)"", ""datasetID"" : ""$($Global:dataset.DataSetId)""}"
+    $body = "{""inviteID"": ""$($inviteID)"", ""containerName"" : ""dataset1"", ""datasetName"" : ""$($Script:dataset.Name)"", ""datasetID"" : ""$($Script:dataset.DataSetId)""}"
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
