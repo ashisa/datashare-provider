@@ -38,4 +38,4 @@ New-AzDataShareDataSetMapping -ResourceGroupName $resourceGroup -AccountName $ds
 Write-Host "Starting initial snapshot in the background..."
 Start-AzDataShareSubscriptionSynchronization -ResourceGroupName $resourceGroup -AccountName $dsaccountName -ShareSubscriptionName $dsshareName -SynchronizationMode FullSync  -AsJob  |Out-Null
 
-Write-Host "Azure Data Share service provisioning succeeded."
+Write-Host "Azure Data Share service provisioning succeeded. Please close this window."
