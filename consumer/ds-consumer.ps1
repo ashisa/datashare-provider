@@ -16,26 +16,33 @@ Write-Host "Please follow the instructions below to connect to your Azure subscr
 Write-Host "Connecting to Azure subscription..."
 Connect-AzAccount
 
-Write-Host "Creating resource group..."
+Write-Host "Creating resource group..." -NoNewline
 New-AzResourceGroup -Name $resourceGroup -Location $location |Out-Null
+Write-Host "Done."
 
-Write-Host "Creating data share account..."
+Write-Host "Creating data share account..." -NoNewline
 ($dsAccount=New-AzDataShareAccount -ResourceGroupName $resourceGroup -Name $dsaccountName -Location $location) |Out-Null
+Write-Host "Done."
 
-Write-Host "Assigning contributor role on the storage account for the data share account..."
+Write-Host "Assigning contributor role on the storage account for the data share account..." -NoNewline
 ($storageAccount=New-AzStorageAccount -StorageAccountName $storageName -ResourceGroupName $resourceGroup -Location $location -SkuName Standard_LRS)  |Out-Null
 New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionName "Storage Blob Data Contributor" -Scope $storageAccount.Id  |Out-Null
+Write-Host "Done."
 
-Write-Host "Creating containers..."
+Write-Host "Creating container..." -NoNewline
 New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context |Out-Null
+Write-Host "Done."
 
-Write-Host "Accepting the invite..."
+Write-Host "Accepting the invite..." -NoNewline
 New-AzDataShareSubscription -ResourceGroupName $resourceGroup -AccountName $dsaccountName -Name $dsshareName -SourceShareLocation $location -InvitationId $inviteID  |Out-Null
+Write-Host "Done."
 
-Write-Host "Creating DataSet mapping..."
+Write-Host "Creating DataSet mapping..." -NoNewline
 New-AzDataShareDataSetMapping -ResourceGroupName $resourceGroup -AccountName $dsaccountName -StorageAccountResourceId $storageAccount.Id -Container $dsContainer -Name $dsshareName -ShareSubscriptionName $dsshareName -DataSetId $datasetId |Out-Null
+Write-Host "Done."
 
-Write-Host "Starting initial snapshot in the background..."
+Write-Host "Starting initial snapshot in the background..." -NoNewline
 Start-AzDataShareSubscriptionSynchronization -ResourceGroupName $resourceGroup -AccountName $dsaccountName -ShareSubscriptionName $dsshareName -SynchronizationMode FullSync  -AsJob  |Out-Null
+Write-Host "Done."
 
 Write-Host "Azure Data Share service provisioning succeeded. Please close this window."
