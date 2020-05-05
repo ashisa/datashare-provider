@@ -34,7 +34,7 @@ if (!$dsAccount)
     Write-Host "$Script:dataset.DataSetId"
 }
 else {
-    $body = "Data share account already exists. Please call initiate function to send invites."
+    $body = "Data share account already exists. Please call the invite function to for the consumer setup."
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
