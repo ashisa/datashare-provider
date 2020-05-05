@@ -58,6 +58,7 @@ if ($email) {
 
     Write-Host "Creating ACI instance..."
     $container = New-AzContainerGroup -ResourceGroupName $resourceGroup -Name $invitename -Image docker.io/ashisa/unitty-ds -OsType Linux -IpAddressType Public -Port @(8080) -RestartPolicy Never -Cpu 2 -MemoryInGB 2
+    Write-Host "$($container.IpAddress):$($container.Ports)"
 
     Write-Host "Creating redirect header"
     $url = "http://$($container.IpAddress):$($container.Ports)/?arg=$($scriptUri)&arg=$($inviteID)&arg=$($Script:dataset.Name)&arg=dataset1&arg=$($Script:dataset.DataSetId)"
