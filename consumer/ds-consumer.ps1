@@ -16,7 +16,9 @@ Write-Host "Please follow the instructions below to connect to your Azure subscr
 Write-Host ""
 Write-Host "Connecting to Azure subscription..."
 (Connect-AzAccount -UseDeviceAuthentication) | Out-Null
+Write-Host ""
 
+Write-Host "Initiating provisioning..."
 Write-Host "Creating resource group..." -NoNewline
 (New-AzResourceGroup -Name $resourceGroup -Location $location) |Out-Null
 Write-Host "Done."
@@ -31,7 +33,7 @@ New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionNa
 Write-Host "Done."
 
 Write-Host "Creating container..." -NoNewline
-(New-AzStorageContainer -Container $dsContainer -Context $storageAccount.Context *>&1) |Out-Null
+Start-Job (New-AzStorageContainer -Container $dsContainer -Context $storageAccount.Context *>&1) |Out-Null
 Write-Host "Done."
 
 Write-Host "Accepting the invite..." -NoNewline
