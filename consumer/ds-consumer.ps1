@@ -31,7 +31,7 @@ New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionNa
 Write-Host "Done."
 
 Write-Host "Creating container..." -NoNewline
-(New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context) |Out-Null
+(New-AzStorageContainer -Container $dsContainer -Context $storageAccount.Context *>&1) |Out-Null
 Write-Host "Done."
 
 Write-Host "Accepting the invite..." -NoNewline
