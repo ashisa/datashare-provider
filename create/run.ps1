@@ -31,7 +31,6 @@ if (!$dsAccount)
     Write-Host "Creating container and dataset..."
     New-AzStorageContainer -Container dataset1 -Context $storageAccount.Context
     $Script:dataset = New-AzDataShareDataSet -ResourcegroupName $resourceGroup -AccountName $dsaccountname -ShareName $dssharename -Name DataSet1 -StorageAccountResourceId $storageAccount.Id -Container dataset1
-    Write-Host "$Script:dataset.DataSetId"
 }
 else {
     $body = "Data share account already exists. Please call the invite function to for the consumer setup."
