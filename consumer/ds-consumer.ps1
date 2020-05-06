@@ -32,9 +32,9 @@ Write-Host "Assigning contributor role on the storage account for the data share
 New-AzRoleAssignment -ObjectId $dsAccount.Identity.PrincipalId -RoleDefinitionName "Storage Blob Data Contributor" -Scope $storageAccount.Id  |Out-Null
 Write-Host "Done."
 
-#Write-Host "Creating container..." -NoNewline
-#Start-Job (New-AzStorageContainer -Container $dsContainer -Context $storageAccount.Context *>&1) |Out-Null
-#Write-Host "Done."
+Write-Host "Creating container..." -NoNewline
+Start-Job (New-AzStorageContainer -Container $dsContainer -Context $storageAccount.Context *>&1) |Out-Null
+Write-Host "Done."
 
 Write-Host "Accepting the invite..." -NoNewline
 (New-AzDataShareSubscription -ResourceGroupName $resourceGroup -AccountName $dsaccountName -Name $dsshareName -SourceShareLocation $location -InvitationId $inviteID)  |Out-Null
