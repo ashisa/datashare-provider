@@ -11,9 +11,7 @@ Set-Item Env:\SuppressAzurePowerShellBreakingChangeWarnings "true"
 
 Write-Host ""
 Write-Host "Initiating Azure Data Share service provisioning..."
-Write-Host ""
 Write-Host "Please follow the instructions below to connect to your Azure subscription."
-Write-Host ""
 Write-Host "Connecting to Azure subscription..."
 (Connect-AzAccount -UseDeviceAuthentication) | Out-Null
 Write-Host ""
